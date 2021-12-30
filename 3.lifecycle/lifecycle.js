@@ -1,0 +1,79 @@
+class Parent extends React.Component {
+    constructor(props) {
+    
+      super(props);
+      this.state = {
+        text: "mounting phase",
+        show: true,
+      };
+  
+      console.log("parent constructor executed");
+    }
+  
+    static getDerivedStateFromProps(props, state) {
+      
+      console.log("parent getDerivedStateFromProps executed");
+      return state;
+    }
+  
+    render() {
+     
+      console.log("parent render executed");
+      return (
+        <div>
+          <p> {this.state.text}</p>
+          <button
+            onClick={() => {
+              this.updateText("updating phase");
+            }}
+          >
+            click
+          </button>
+          {this.state.show ? <Child /> : null}
+        </div>
+      );
+    }
+  
+    updateText(text) {
+      this.setState({
+        text: text,
+        show: true,
+      });
+    }
+  
+    shouldComponentUpdate() {
+      console.log("parent shouldComponentUpdate executed");
+      return true;
+    }
+  
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+      console.log("parent getSnapshotBeforeUpdate executed");
+      return "scrolling position";
+    }
+  
+    componentDidUpdate(prevProps, prevState, snapshot) {
+      console.log("parent componentDidUpdate executed");
+      console.log("--------------------------");
+      console.log("prevProps", prevProps);
+      console.log("prevState", prevState);
+      console.log("snapshot", snapshot);
+      console.log("--------------------------");
+    }
+  
+    componentDidMount() {
+   
+      console.log("parent componentDidMount executed");
+    }
+  }
+  
+  class Child extends React.Component {
+    render() {
+      return <div>child component</div>;
+    }
+    componentWillUnmount(){
+      console.log("child componentWillUnmount executed");
+    }
+  }
+  
+  
+  ReactDOM.render(<Parent />, document.getElementById("container"));
